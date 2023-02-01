@@ -3,6 +3,7 @@ const exphbs = require('express-handlebars');
 const passport = require("passport");
 const path = require('path')
 const session = require("express-session") ;
+const logger = require('./helpers/log4js')
 
 //inicializacion------------------
 const app = express()
@@ -43,5 +44,12 @@ app.use(require('./routes/randoms'))
 
 //Static Fliles------------------------------------------------
 app.use(express.static(path.join(__dirname , 'public')))
+
+
+app.get('*',(req,res)=>{
+    const {url,method} = req
+    logger.warn(`Se intento acceder a la ruta ${url} por el metodo ${method} pero no fue posible debido a que la ruta no existe `);
+    
+})
 
 module.exports = app
